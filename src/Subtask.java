@@ -13,4 +13,13 @@ public class Subtask extends Task {
     public void setStatus(Status status) {
         this.status = status;
     }
+    @Override
+    public String toString() {
+        return "Task{" +
+                "code= " + index +
+                ", name='" + nameTask + '\'' +
+                ", description='" + descriptionTask + '\'' +
+                ", Status= "+ status + '\'' +
+                '}';
+    }
 }
