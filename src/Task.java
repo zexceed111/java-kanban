@@ -1,49 +1,56 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-
-
 public class Task {
+    private String name;
+    private String description;
+    private int id;
+    private Status status;
 
-        String nameTask;
-        String descriptionTask;
-        int index;
-
-        public Task(String nameTask, String descriptionTask, int index){
-            this.nameTask = nameTask;
-            this.descriptionTask = descriptionTask;
-            this.index = index;
-        }
-
-    public String getNameTask() {
-        return nameTask;
+    public Task(String name, String description, int id) {
+        this.name = name;
+        this.description = description;
+        this.id = id;
+        this.status = Status.NEW; // По умолчанию статус новой задачи - NEW
     }
 
-    public void setNameTask(String nameTask) {
-        this.nameTask = nameTask;
+    // Геттеры и сеттеры
+    public String getName() {
+        return name;
     }
 
-    public String getDescriptionTask() {
-        return descriptionTask;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setDescriptionTask(String descriptionTask) {
-        this.descriptionTask = descriptionTask;
+    public String getDescription() {
+        return description;
     }
 
-    public int getIndex() {
-        return index;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "code= " + index +
-                ", name='" + nameTask + '\'' +
-                ", description='" + descriptionTask + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
                 '}';
     }
 }
