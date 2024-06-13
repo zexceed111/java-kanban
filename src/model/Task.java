@@ -1,3 +1,5 @@
+package model;
+
 public class Task {
     private String name;
     private String description;
@@ -8,10 +10,10 @@ public class Task {
         this.name = name;
         this.description = description;
         this.id = id;
-        this.status = Status.NEW; // По умолчанию статус новой задачи - NEW
+        this.status = Status.NEW; // Default status of a new task
     }
 
-    // Геттеры и сеттеры
+
     public String getName() {
         return name;
     }
