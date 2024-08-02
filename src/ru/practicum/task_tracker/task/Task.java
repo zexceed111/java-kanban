@@ -60,15 +60,6 @@ public class Task {
     }
 
     @Override
-    public String toString() {
-        return "Task{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}' + "\n";
-    }
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Task)) return false;
@@ -80,4 +71,15 @@ public class Task {
     public int hashCode() {
         return Objects.hash(id, name);
     }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                '}' + "\n";
+    }
+
 }
