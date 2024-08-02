@@ -81,6 +81,7 @@ class InMemoryTaskManagerTest {
         assertEquals(taskManager.getTasks().size(), 2);
     }
 
+
     @Test
     void taskFieldImmutability() {
         // создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер

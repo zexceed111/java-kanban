@@ -1,5 +1,7 @@
 package ru.practicum.task_tracker.task;
 
+import java.util.Objects;
+
 public class Task {
 
     private Integer id;
@@ -65,5 +67,17 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", status=" + status +
                 '}' + "\n";
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Task)) return false;
+        Task task = (Task) o;
+        return id == task.id && Objects.equals(name, task.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }
