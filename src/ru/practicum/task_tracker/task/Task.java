@@ -59,18 +59,6 @@ public class Task {
         this.status = status;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Task)) return false;
-        Task task = (Task) o;
-        return id == task.id && Objects.equals(name, task.name);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name);
-    }
 
     @Override
     public String toString() {
