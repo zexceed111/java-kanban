@@ -1,7 +1,5 @@
 package ru.practicum.task_tracker.task;
 
-import java.util.Objects;
-
 public class Task {
 
     private Integer id;
