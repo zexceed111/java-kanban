@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private  HistoryManager historyManager = Managers.getDefaultHistory();
+    private HistoryManager historyManager = Managers.getDefaultHistory();
 
     private final Map<Integer, Task> tasks = new HashMap<>();
     private final Map<Integer, Epic> epics = new HashMap<>();
@@ -23,7 +23,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getHistory() {
-       return historyManager.getHistory();
+        return historyManager.getHistory();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class InMemoryTaskManager implements TaskManager {
         for (Task task : taskValues) {
             historyManager.add(task);
         }
-        return  taskValues;
+        return taskValues;
     }
 
     public Task getByTaskId(Integer taskId) {
@@ -46,7 +46,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Task createTask(Task task) {
-            task.setId(getNextId());
+        task.setId(getNextId());
         tasks.put(task.getId(), task);
         return task;
     }
@@ -63,7 +63,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public boolean deleteTask(int taskId) {
-       return tasks.remove(taskId) != null;
+        return tasks.remove(taskId) != null;
     }
 
     @Override
@@ -197,7 +197,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subtask.getEpicId());
         epic.removesubtaskById(subtask);
 
-         updateStatusEpic(epic);
+        updateStatusEpic(epic);
         return removesubtask;
     }
 
@@ -210,7 +210,7 @@ public class InMemoryTaskManager implements TaskManager {
 
 
     private int getNextId() {
-        return  nextId++;
+        return nextId++;
     }
 
 }

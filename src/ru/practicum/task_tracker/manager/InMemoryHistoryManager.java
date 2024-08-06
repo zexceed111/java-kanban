@@ -10,7 +10,7 @@ import java.util.*;
 public class InMemoryHistoryManager implements HistoryManager {
     private Node head;
     private Node tail;
-    private Map<Integer, Node> nodeMap;
+    private final Map<Integer, Node> nodeMap;
 
     public InMemoryHistoryManager() {
         this.nodeMap = new HashMap<>();
@@ -52,12 +52,11 @@ public class InMemoryHistoryManager implements HistoryManager {
     private void linkLast(Node node) {
         if (tail == null) {
             head = node;
-            tail = node;
         } else {
             tail.next = node;
             node.prev = tail;
-            tail = node;
         }
+        tail = node;
     }
 
     private void removeNode(Node node) {
