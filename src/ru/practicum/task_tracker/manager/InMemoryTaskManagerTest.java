@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class InMemoryTaskManagerTest {
 
 
-
     TaskManager taskManager = Managers.getDefault();
 
     @Test
@@ -74,9 +73,9 @@ class InMemoryTaskManagerTest {
     @Test
     void checkIdConflict() {
         // проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
-        Task task1 = new Task(  "таск1.Имя", "таск1.Описание", Status.NEW);
+        Task task1 = new Task("таск1.Имя", "таск1.Описание", Status.NEW);
         taskManager.createTask(task1);
-        Task task2 = new Task( 0,"таск2.Имя", "таск2.Описание", Status.NEW);
+        Task task2 = new Task(0, "таск2.Имя", "таск2.Описание", Status.NEW);
         taskManager.createTask(task2);
         assertEquals(taskManager.getTasks().size(), 2);
     }
