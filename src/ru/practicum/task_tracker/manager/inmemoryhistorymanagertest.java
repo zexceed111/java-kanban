@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class inMemoryHistoryManagerTest {
+class InMemoryHistoryManagerTest {
 
     private InMemoryHistoryManager historyManager;
 
@@ -25,7 +25,7 @@ class inMemoryHistoryManagerTest {
         List<Task> history = historyManager.getHistory();
 
         assertEquals(1, history.size(), "История должна содержать одну задачу.");
-        assertEquals(task, history.get(0), "Задача в истории должна быть такой же, как и добавленная задача.");
+        assertEquals(task, history.getFirst(), "Задача в истории должна быть такой же, как и добавленная задача.");
     }
 
     @Test
@@ -39,7 +39,7 @@ class inMemoryHistoryManagerTest {
         List<Task> history = historyManager.getHistory();
 
         assertEquals(1, history.size(), "После обновления история все еще должна содержать одну задачу.");
-        assertEquals(task2, history.get(0), "Задачей в истории должна быть обновленная задача.");
+        assertEquals(task2, history.getFirst(), "Задачей в истории должна быть обновленная задача.");
     }
 
 
