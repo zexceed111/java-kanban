@@ -4,9 +4,13 @@ import ru.practicum.task_tracker.task.Task;
 
 import java.util.List;
 
-public interface HistoryManager  {
-
+public interface HistoryManager {
+    void add(Task task);
+  
     void add(Task task);
     List<Task> getHistory();
+    void remove(int id);
 
+    List<Task> getHistory();
 }
+

@@ -9,11 +9,11 @@ import ru.practicum.task_tracker.task.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
-
 
 
     TaskManager taskManager = Managers.getDefault();
@@ -74,12 +74,13 @@ class InMemoryTaskManagerTest {
     @Test
     void checkIdConflict() {
         // проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
-        Task task1 = new Task(  "таск1.Имя", "таск1.Описание", Status.NEW);
+        Task task1 = new Task("таск1.Имя", "таск1.Описание", Status.NEW);
         taskManager.createTask(task1);
-        Task task2 = new Task( 0,"таск2.Имя", "таск2.Описание", Status.NEW);
+        Task task2 = new Task(0, "таск2.Имя", "таск2.Описание", Status.NEW);
         taskManager.createTask(task2);
         assertEquals(taskManager.getTasks().size(), 2);
     }
+
 
     @Test
     void taskFieldImmutability() {
@@ -108,7 +109,7 @@ class InMemoryTaskManagerTest {
         taskManager.getTasks();
         List<Task> history = new ArrayList<>(taskManager.getHistory());
         for (Task taskGetTask1 : history) {
-            if (taskGetTask1.getId() == taskId && taskGetTask1.getStatus() == Status.NEW) {
+            if (Objects.equals(taskGetTask1.getId(), taskId) && taskGetTask1.getStatus() == Status.NEW) {
                 assertEquals(taskGetTask1, task1);
             }
         }
