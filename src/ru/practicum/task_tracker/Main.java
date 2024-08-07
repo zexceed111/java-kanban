@@ -7,7 +7,6 @@ import ru.practicum.task_tracker.task.Status;
 import ru.practicum.task_tracker.task.Subtask;
 import ru.practicum.task_tracker.task.Task;
 
-
 import java.util.List;
 
 public class Main {
@@ -15,7 +14,7 @@ public class Main {
     public static void main(String[] args) {
 
 
-        // testTasks();
+       // testTasks();
         testEpicAndSubtask();
 
     }
@@ -59,6 +58,7 @@ public class Main {
 
     private static void testEpicAndSubtask() {
         TaskManager taskManager = Managers.getDefault();
+        HistoryManager historyManager = Managers.getDefaultHistory();  // ?????
 
         System.out.println("Тест 5: Пустой список эпика");
         List<Epic> epics = taskManager.getEpics();
@@ -122,8 +122,5 @@ public class Main {
         System.out.println("Проверяем список сабтасок: " + taskManager.getSubtasks());
         System.out.println("Проверяем список эпиков: " + taskManager.getEpics());
         System.out.println("Проверяем список тасок: " + taskManager.getTasks());
-
-
     }
-
 }
