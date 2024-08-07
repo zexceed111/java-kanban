@@ -9,6 +9,7 @@ import ru.practicum.task_tracker.task.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -108,7 +109,7 @@ class InMemoryTaskManagerTest {
         taskManager.getTasks();
         List<Task> history = new ArrayList<>(taskManager.getHistory());
         for (Task taskGetTask1 : history) {
-            if (taskGetTask1.getId() == taskId && taskGetTask1.getStatus() == Status.NEW) {
+            if (Objects.equals(taskGetTask1.getId(), taskId) && taskGetTask1.getStatus() == Status.NEW) {
                 assertEquals(taskGetTask1, task1);
             }
         }
