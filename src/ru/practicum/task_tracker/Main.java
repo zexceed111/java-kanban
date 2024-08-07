@@ -22,7 +22,6 @@ public class Main {
 
     private static void testTasks() {
         TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyManager = Managers.getDefaultHistory();
 
         System.out.println("Тест 1: Пустой список");
         List<Task> tasks = taskManager.getTasks();
