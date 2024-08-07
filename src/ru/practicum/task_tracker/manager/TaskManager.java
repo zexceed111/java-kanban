@@ -16,7 +16,7 @@ public interface TaskManager {
 
     Task createTask(Task task);
 
-    Task updateTask(Task task);
+    void updateTask(Task task);
 
     boolean deleteTask(int taskId);
 
