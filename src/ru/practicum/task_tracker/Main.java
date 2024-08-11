@@ -4,7 +4,6 @@ import ru.practicum.task_tracker.manager.TaskManager;
 import ru.practicum.task_tracker.task.Epic;
 import ru.practicum.task_tracker.task.Status;
 import ru.practicum.task_tracker.task.Subtask;
-import ru.practicum.task_tracker.task.Task;
 
 import java.util.List;
 
@@ -13,45 +12,8 @@ public class Main {
     public static void main(String[] args) {
 
 
-       // testTasks();
+        // testTasks();
         testEpicAndSubtask();
-
-    }
-
-    private static void testTasks() {
-        TaskManager taskManager = Managers.getDefault();
-
-
-        System.out.println("Тест 1: Пустой список");
-        List<Task> tasks = taskManager.getTasks();
-        System.out.println("Таски должны быть пустые: " + tasks.isEmpty());
-        System.out.println();
-
-        System.out.println("Тест 2: Создание таски");
-        Task task1 = new Task("таск.Имя", "таск.Описание", Status.NEW);
-        Task task1Created = taskManager.createTask(task1);
-        System.out.println("Созданная таска должна содержать айди: " + (task1Created.getId() != null));
-        System.out.println("Список тасок должен содержать нашу таску: " + taskManager.getTasks());
-        System.out.println();
-
-        System.out.println("Тест 3: Обновление таски");
-        task1.setStatus(Status.IN_PROGRESS);
-        taskManager.updateTask(task1);
-        System.out.println("Обновленная таска должна иметь поля: " + taskManager.getTasks());
-        System.out.println();
-
-        System.out.println("Тест 3.1: История просмотров");
-        System.out.println(taskManager.getHistory());
-        System.out.println();
-
-        System.out.println("Тест 4: Получение таски по Id");
-        System.out.println(taskManager.getByTaskId(task1.getId()));
-
-        System.out.println("Тест 5: Удаление таски");
-        boolean deleteRes = taskManager.deleteTask(task1.getId());
-        System.out.println("Удаление должно пройти успешно: " + deleteRes);
-        System.out.println("Список тасок пусой: " + taskManager.getTasks());
-        System.out.println();
 
     }
 
