@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TaskManager {
 
-    public List<Task> getHistory();
+    List<Task> getHistory();
 
     List<Task> getTasks();
 
@@ -38,7 +38,7 @@ public interface TaskManager {
 
     Subtask createSubtask(Subtask subtask);
 
-    Subtask updateSubtask(Subtask subtask);
+    void updateSubtask(Subtask subtask);
 
     boolean deleteSubtask(Integer id);
 
