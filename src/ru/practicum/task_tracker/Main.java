@@ -5,14 +5,11 @@ import ru.practicum.task_tracker.task.Epic;
 import ru.practicum.task_tracker.task.Status;
 import ru.practicum.task_tracker.task.Subtask;
 
-
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
-
-
         // testTasks();
         testEpicAndSubtask();
 
