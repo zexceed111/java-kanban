@@ -16,7 +16,7 @@ public interface TaskManager {
 
     Task createTask(Task task);
 
-    Task updateTask(Task task);
+    void updateTask(Task task);
 
     boolean deleteTask(int taskId);
 
@@ -38,7 +38,7 @@ public interface TaskManager {
 
     Subtask createSubtask(Subtask subtask);
 
-    Subtask updateSubtask(Subtask subtask);
+    void updateSubtask(Subtask subtask);
 
     boolean deleteSubtask(Integer id);
 
