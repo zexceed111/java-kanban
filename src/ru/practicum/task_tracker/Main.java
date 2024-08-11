@@ -58,7 +58,6 @@ public class Main {
 
     private static void testEpicAndSubtask() {
         TaskManager taskManager = Managers.getDefault();
-        HistoryManager historyManager = Managers.getDefaultHistory();  // ?????
 
         System.out.println("Тест 5: Пустой список эпика");
         List<Epic> epics = taskManager.getEpics();
