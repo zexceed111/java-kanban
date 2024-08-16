@@ -79,8 +79,5 @@ public class Main {
         System.out.println("Проверяем список сабтасок: " + taskManager.getSubtasks());
         System.out.println("Проверяем список эпиков: " + taskManager.getEpics());
         System.out.println("Проверяем список тасок: " + taskManager.getTasks());
-
-
     }
-
 }
