@@ -1,7 +1,8 @@
-package ru.practicum.task_tracker.task;
+package main.models;
 
 public enum Status {
     NEW,
     IN_PROGRESS,
     DONE
+
 }

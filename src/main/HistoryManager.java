@@ -1,6 +1,6 @@
-package ru.practicum.task_tracker.manager;
+package main;
 
-import ru.practicum.task_tracker.task.Task;
+import main.models.Task;
 
 import java.util.List;
 
@@ -11,4 +11,6 @@ public interface HistoryManager {
     void remove(int id);
 
     List<Task> getHistory();
+
+
 }
