@@ -90,12 +90,4 @@ public class Main {
             System.out.println(task);
         }
     }
-
-    public static void printMainMenu() {
-        System.out.println("Выберите команду:");
-        System.out.println("1 - Работа с задачами");
-        System.out.println("2 - Работа с эпиками");
-        System.out.println("3 - Работа с подзадачами");
-        System.out.println("4 - Выход");
-    }
 }
