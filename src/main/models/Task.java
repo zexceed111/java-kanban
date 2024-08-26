@@ -69,12 +69,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "main.models.Task{" +
-                "title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';
+        return "main.models.Task{" + "title='" + title + '\'' + ", description='" + description + '\'' + ", id=" + id + ", status=" + status + '}';
     }
 
     public String toStringForFile() {

@@ -173,8 +173,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public boolean hasAllSubtaskSameStatus(Status status, Epic epic) {
         for (int i : epic.getSubtasksIds()) {
-            if (subtaskHashMap.get(i).getStatus() != status)
-                return false;
+            if (subtaskHashMap.get(i).getStatus() != status) return false;
         }
         return true;
     }
