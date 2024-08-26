@@ -67,12 +67,9 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void saveEmptyFile() throws ManagerSaveException {
-        try {
+
             TaskManager fileBackedTaskManager1 = new FileBackedTaskManager(new InMemoryHistoryManager(), new File("test2.csv"));
             TaskManager loadedFromFileBackedTaskManager = loadFromFile(new File("test2.csv"));
-        } catch (ManagerSaveException e) {
-            assertEquals(e.getMessage(), "Ошибка работы с файлом");
-        }
 
     }
 
