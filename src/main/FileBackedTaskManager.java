@@ -1,10 +1,6 @@
 package main;
 
-import main.models.Status;
-import main.models.Task;
-import main.models.Subtask;
-import main.models.Epic;
-import main.models.ManagerSaveException;
+import main.models.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -33,7 +29,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public static FileBackedTaskManager loadFromFile(File file) throws ManagerSaveException {
+    public static FileBackedTaskManager loadFromFile(File file) throws ManagerLoadException {
         try {
             String data = Files.readString(file.toPath());
             String[] lines = data.split("\n");
@@ -64,7 +60,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             return fileBackedTaskManager;
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка работы с файлом", e);
+            throw new ManagerLoadException("Ошибка работы с файлом", e);
         }
     }
 
