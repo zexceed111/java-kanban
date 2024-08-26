@@ -70,7 +70,6 @@ public class FileBackedTaskManagerTest {
 
             TaskManager fileBackedTaskManager1 = new FileBackedTaskManager(new InMemoryHistoryManager(), new File("test2.csv"));
             TaskManager loadedFromFileBackedTaskManager = loadFromFile(new File("test2.csv"));
-
     }
 
     @Test
