@@ -142,5 +142,3 @@ import static org.junit.jupiter.api.Assertions.*;
         final Task actual = history.get(0);
         assertEquals(actual, subtask, "начальный узел не совпадает");
     }
-
-}
