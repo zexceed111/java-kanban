@@ -1,5 +1,6 @@
 package main;
 
+
 import main.models.*;
 
 import java.io.BufferedWriter;
@@ -21,17 +22,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         autoSaveFileName = file;
     }
 
-    public void save() throws ManagerSaveException {
-        try (BufferedWriter wr = new BufferedWriter(new FileWriter(autoSaveFileName, StandardCharsets.UTF_8))) {
-            wr.write(makeDataToSave(getTasks(), getSubtasks(), getEpics(), this.historyManager));
-        } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка работы с файлом", e);
-        }
-    }
 
-    public static FileBackedTaskManager loadFromFile(File file) throws ManagerLoadException {
+    public static FileBackedTaskManager loadFromFile(File file) throws ManagerSaveException {
         try {
+
             String data = Files.readString(file.toPath());
+
             String[] lines = data.split("\n");
             FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(new InMemoryHistoryManager(), file);
             int size = lines.length;
@@ -60,7 +56,15 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             }
             return fileBackedTaskManager;
         } catch (IOException e) {
-            throw new ManagerLoadException("Ошибка работы с файлом", e);
+            throw new ManagerSaveException("Ошибка работы с файлом", e);
+        }
+    }
+
+    public void save() throws ManagerSaveException {
+        try (BufferedWriter wr = new BufferedWriter(new FileWriter(autoSaveFileName, StandardCharsets.UTF_8))) {
+            wr.write(makeDataToSave(getTasks(), getSubtasks(), getEpics(), this.historyManager));
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка работы с файлом", e);
         }
     }
 
