@@ -48,8 +48,7 @@ public class Epic extends Task {
 
 
     public void removeSubtask(int id) {
-        if (!this.subtasksIds.contains(id))
-            return;
+        if (!this.subtasksIds.contains(id)) return;
         int index = this.subtasksIds.indexOf(id);
         this.subtasksIds.remove(index);
 
@@ -67,13 +66,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return "main.models.Epic{" +
-                "subtasksIds=" + subtasksIds +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';
+        return "main.models.Epic{" + "subtasksIds=" + subtasksIds + ", title='" + title + '\'' + ", description='" + description + '\'' + ", id=" + id + ", status=" + status + '}';
     }
 
     @Override

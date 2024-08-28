@@ -27,8 +27,7 @@ public class CSVTaskFormatter {
             history.append(epic.toStringForFile()).append("\n");
         }
         history.append("\n");
-        if (historyManager.getHistory().isEmpty())
-            history.append("empty history");
+        if (historyManager.getHistory().isEmpty()) history.append("empty history");
         else {
             history.append(historyToString(historyManager));
         }
@@ -52,8 +51,7 @@ public class CSVTaskFormatter {
 
     static List<Integer> historyFromString(String value) {
         List<Integer> result = new ArrayList<>();
-        if (value.equals("empty history"))
-            return result;
+        if (value.equals("empty history")) return result;
         String[] historyIds = value.split(",");
         for (String id : historyIds) {
             result.add(Integer.parseInt(id));
