@@ -1,3 +1,4 @@
+
 import main.HistoryManager;
 import main.Managers;
 import main.TaskManager;
@@ -5,6 +6,8 @@ import main.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,38 +22,39 @@ class InMemoryHistoryManagerTest {
     public void setUp() throws ManagerSaveException {
         inMemoryTaskManager = Managers.getDefault();
 
-        Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW);
-        Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW);
-        Task task3 = new Task("Задача 3", "Описание задачи 3", Status.NEW);
+        Task task1 = new Task("Задача 1", "Описание задачи 1",  Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,25,10,0));
+        Task task2 = new Task("Задача 2", "Описание задачи 2", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,26,11,0));
+        Task task3 = new Task("Задача 3", "Описание задачи 3",  Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,28,12,0));
 
         inMemoryTaskManager.addTask(task1); //1
         inMemoryTaskManager.addTask(task2);//2
         inMemoryTaskManager.addTask(task3);//3
 
-        Epic epic1 = new Epic("Эпик 1", "Описание Эпика 1", Status.NEW, new ArrayList<>());
-        Epic epic2 = new Epic("Эпик 2", "Описание Эпика 2", Status.NEW, new ArrayList<>());
-        Epic epic3 = new Epic("Эпик 3", "Описание Эпика 3", Status.NEW, new ArrayList<>());
+        Epic epic1 = new Epic("Эпик 1", "Описание Эпика 1",  Status.NEW, Duration.ofMinutes(0), LocalDateTime.of(2024,1,1,0,0), new ArrayList<>());
+        Epic epic2 = new Epic("Эпик 2", "Описание Эпика 2",  Status.NEW,Duration.ofMinutes(0), LocalDateTime.of(2024,1,1,0,0), new ArrayList<>());
+        Epic epic3 = new Epic("Эпик 3", "Описание Эпика 3",  Status.NEW, Duration.ofMinutes(0),LocalDateTime.of(2024,1,1,0,0), new ArrayList<>());
 
         inMemoryTaskManager.addEpic(epic1);//4
         inMemoryTaskManager.addEpic(epic2);//5
         inMemoryTaskManager.addEpic(epic3);//6
 
-        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, epic1.getId());
-        Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, epic1.getId());
-        Subtask subtask3 = new Subtask("Подзадача 3", "Описание подзадачи 3", Status.NEW, epic2.getId());
-        Subtask subtask4 = new Subtask("Подзадача 4", "Описание подзадачи 4", Status.NEW, epic2.getId());
-        Subtask subtask5 = new Subtask("Подзадача 5", "Описание подзадачи 5", Status.NEW, epic3.getId());
-        Subtask subtask6 = new Subtask("Подзадача 6", "Описание подзадачи 6", Status.NEW, epic3.getId());
+        Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1",  Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,28,13,0),epic1.getId());
+        Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2",    Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,28,14,0),epic1.getId());
+        Subtask subtask3 = new Subtask("Подзадача 3", "Описание подзадачи 3",  Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,28,15,0),epic2.getId());
+        Subtask subtask4 = new Subtask("Подзадача 4", "Описание подзадачи 4",   Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,28,16,0),epic2.getId());
+        Subtask subtask5 = new Subtask("Подзадача 5", "Описание подзадачи 5",   Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,28,17,0),epic3.getId());
+        Subtask subtask6 = new Subtask("Подзадача 6", "Описание подзадачи 6",   Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024,3,28,18,0),epic3.getId());
         inMemoryTaskManager.addSubtask(subtask1);//7
         inMemoryTaskManager.addSubtask(subtask2);//8
         inMemoryTaskManager.addSubtask(subtask3);//9
         inMemoryTaskManager.addSubtask(subtask4);//10
         inMemoryTaskManager.addSubtask(subtask5);//11
         inMemoryTaskManager.addSubtask(subtask6);//12
+
     }
 
     @Test
-    void add() throws ManagerSaveException {
+    void add() throws ManagerSaveException  {
         Task t = inMemoryTaskManager.getTask(1);
         final List<Task> history = inMemoryTaskManager.getHistory();
         assertNotNull(history, "История не пустая.");
@@ -58,7 +62,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void ShouldHistorySizeBeTheSameBecauseTheTaskHasSameId() throws ManagerSaveException {
+    void ShouldHistorySizeBeTheSameBecauseTheTaskHasSameId() throws ManagerSaveException  {
         Task t = inMemoryTaskManager.getTask(2);
         for (int i = 0; i < 9; i++) {
             t = inMemoryTaskManager.getTask(1);
@@ -90,13 +94,14 @@ class InMemoryHistoryManagerTest {
                 containsTasks = true;
             }
             contains = containsEpics && containsSubtasks && containsTasks;
-            if (contains) break;
+            if (contains)
+                break;
         }
         assertTrue(contains, "Задачи одного типа");
     }
 
     @Test
-    void CheckIfHistoryDontHasNewTaskWhenTheTaskHasSameId() throws ManagerSaveException {
+    void CheckIfHistoryDontHasNewTaskWhenTheTaskHasSameId() throws ManagerSaveException  {
 
         Task t1 = inMemoryTaskManager.getTask(1);
         Task t2 = inMemoryTaskManager.getTask(1);
@@ -107,7 +112,7 @@ class InMemoryHistoryManagerTest {
 
 
     @Test
-    void CheckIfHistoryDontAddNewTaskWhenTheTaskHasSameId() throws ManagerSaveException {
+    void CheckIfHistoryDontAddNewTaskWhenTheTaskHasSameId() throws ManagerSaveException  {
 
         Task t1 = inMemoryTaskManager.getTask(1);
         Subtask subtask = inMemoryTaskManager.getSubtask(10);
@@ -131,7 +136,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void ShouldAddTaskToTheHead() throws ManagerSaveException {
+    void ShouldAddTaskToTheHead()  throws ManagerSaveException {
 
         Task t1 = inMemoryTaskManager.getTask(1);
         Subtask subtask = inMemoryTaskManager.getSubtask(10);
