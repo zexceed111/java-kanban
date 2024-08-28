@@ -12,6 +12,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+class InMemoryHistoryManagerTest {
+
     private static TaskManager inMemoryTaskManager;
     private static HistoryManager historyManager;
 
@@ -142,3 +144,5 @@ import static org.junit.jupiter.api.Assertions.*;
         final Task actual = history.get(0);
         assertEquals(actual, subtask, "начальный узел не совпадает");
     }
+
+}
