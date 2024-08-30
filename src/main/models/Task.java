@@ -1,5 +1,8 @@
 package main.models;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -7,19 +10,47 @@ public class Task {
     protected String description;
     protected int id;
     protected Status status;
+    protected long duration;
+    protected LocalDateTime startTime;
 
-    public Task(int id, String title, String description, Status status) {
+    public Task(int id, String title, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.title = title;
         this.description = description;
         this.id = id;
         this.status = status;
+        this.duration = duration.toMinutes();
+        this.startTime = startTime;
+
     }
 
-    public Task(String title, String description, Status status) {
+    public Task(String title, String description, Status status, Duration duration, LocalDateTime startTime) {
         this.id = 0;
         this.title = title;
         this.description = description;
         this.status = status;
+        this.duration = duration.toMinutes();
+        this.startTime = startTime;
+    }
+
+
+    public Duration getDuration() {
+        return Duration.ofMinutes(duration);
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration.toMinutes();
+    }
+
+    public LocalDateTime getEndTime() {
+        return this.startTime.plusMinutes(this.duration);
+    }
+
+    public LocalDateTime getStartTime() {
+        return this.startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
     }
 
     public String getTitle() {
@@ -67,12 +98,14 @@ public class Task {
         return Objects.hash(title, description, id, status);
     }
 
-    @Override
-    public String toString() {
-        return "main.models.Task{" + "title='" + title + '\'' + ", description='" + description + '\'' + ", id=" + id + ", status=" + status + '}';
-    }
 
     public String toStringForFile() {
-        return String.format("%d,TASK,%s,%s,%s,", id, title, status, description);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+        return String.format("%d,TASK,%s,%s,%s,%d,%s", id, title, status, description, duration, startTime.format(formatter));
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" + "title='" + title + '\'' + ", description='" + description + '\'' + ", id=" + id + ", status=" + status + ", duration=" + duration + ", startTime=" + startTime + '}';
     }
 }

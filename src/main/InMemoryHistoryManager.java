@@ -1,9 +1,6 @@
 package main;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 
 import main.models.Node;
 import main.models.Task;
@@ -58,6 +55,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     public void removeNode(Node node) {
+
         if (size == 1) {
             head = null;
             tail = null;
