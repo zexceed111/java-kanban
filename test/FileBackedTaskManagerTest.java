@@ -94,7 +94,7 @@ public class FileBackedTaskManagerTest {
         fileBackedTaskManager.addTask(expected); //1
         Set<Task> priority = fileBackedTaskManager.getPrioritizedTasks();
 
-        Task actual = priority.first();
+        Task actual = priority;
         assertEquals(expected, actual, "Задачи не совпадают");
     }
 
@@ -104,7 +104,7 @@ public class FileBackedTaskManagerTest {
         fileBackedTaskManager.addTask(expected); //1
         Set<Task> priority = fileBackedTaskManager.getPrioritizedTasks();
 
-        Task actual = priority.last();
+        Task actual = priority;
         assertEquals(expected, actual, "Задачи не совпадают");
     }
 
