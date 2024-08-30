@@ -51,7 +51,7 @@ public class FileBackedTaskManagerTest {
         fileBackedTaskManager1.addSubtask(subtask2);
 
         //задачи и подзадачи сохранены правильно
-        fileBackedTaskManager1.saveToFile();
+        fileBackedTaskManager.saveToFile();
 
         Task actual = fileBackedTaskManager1.getTask(1);
         Subtask subtask = fileBackedTaskManager1.getSubtask(3);
