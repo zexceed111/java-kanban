@@ -11,7 +11,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final Map<Integer, Task> taskHashMap = new HashMap<>();
     protected final Map<Integer, Epic> epicHashMap = new HashMap<>();
     protected final Map<Integer, Subtask> subtaskHashMap = new HashMap<>();
-    protected final TreeSet<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
+    protected final Collection<Task> prioritizedTasks = new TreeSet<>(Comparator.comparing(Task::getStartTime));
     protected int idTask = 0;
 
     public InMemoryTaskManager(HistoryManager historyManager) {
@@ -40,7 +40,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
 
-    public TreeSet<Task> getPrioritizedTasks() {
+    public Collection<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }
 

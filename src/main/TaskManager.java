@@ -2,9 +2,9 @@ package main;
 
 import main.models.*;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
 public interface TaskManager {
     Map<Integer, Task> getTaskHashMap();
@@ -16,7 +16,7 @@ public interface TaskManager {
     List<Task> getHistory();
 
 
-    TreeSet<Task> getPrioritizedTasks();
+    Collection<Task> getPrioritizedTasks();
 
     int getNewId();
 
