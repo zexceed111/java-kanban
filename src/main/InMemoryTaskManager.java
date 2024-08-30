@@ -296,13 +296,25 @@ public class InMemoryTaskManager implements TaskManager {
             epic.setEndTime(null);
             return;
         }
-        Optional<Subtask> firstSubtask = subtaskHashMap.values().stream().filter(s -> epic.getSubtasksIds().contains(s.getId())).min(Comparator.comparing(Task::getStartTime)).stream().findFirst();
+
+        Optional<Subtask> firstSubtask = subtaskHashMap.values().stream()
+                .filter(s -> epic.getSubtasksIds().contains(s.getId()))
+                .min(Comparator.comparing(Task::getStartTime))
+                .stream()
+                .findFirst();
         firstSubtask.ifPresent(value -> epic.setStartTime(value.getStartTime()));
-        Optional<Subtask> lastSubtask = subtaskHashMap.values().stream().filter(s -> epic.getSubtasksIds().contains(s.getId())).max(Comparator.comparing(Task::getEndTime)).stream().findFirst();
-        lastSubtask.ifPresent(value -> epic.setEndTime(value.getStartTime()));
+
+        Optional<Subtask> lastSubtask = subtaskHashMap.values().stream()
+                .filter(s -> epic.getSubtasksIds().contains(s.getId()))
+                .max(Comparator.comparing(Task::getEndTime))
+                .stream()
+                .findFirst();
+        lastSubtask.ifPresent(value -> epic.setEndTime(value.getEndTime()));
+
         long totalDuration = 0;
-        for (int i : epic.getSubtasksIds())
-            totalDuration = totalDuration + subtaskHashMap.get(i).getDuration().toMinutes();
+        for (int i : epic.getSubtasksIds()) {
+            totalDuration += subtaskHashMap.get(i).getDuration().toMinutes();
+        }
         epic.setDuration(Duration.ofMinutes(totalDuration));
     }
 }
