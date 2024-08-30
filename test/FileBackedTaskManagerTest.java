@@ -90,7 +90,7 @@ public class FileBackedTaskManagerTest {
     public void getPriorityFirstTask() throws ManagerSaveException {
         Task expected = new Task("Задача 2", "Описание задачи 1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 8, 0));
         fileBackedTaskManager.addTask(expected); //1
-        Collection<Task> priority = fileBackedTaskManager.getPrioritizedTasks();
+        TreeSet<Task> priority = fileBackedTaskManager.getPrioritizedTasks();
 
         Task actual = priority.first();
         assertEquals(expected, actual, "Задачи не совпадают");
@@ -100,7 +100,7 @@ public class FileBackedTaskManagerTest {
     public void getPriorityLastTask() throws ManagerSaveException {
         Task expected = new Task("Задача 2", "Описание задачи 1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 14, 1));
         fileBackedTaskManager.addTask(expected); //1
-        Collection<Task> priority = fileBackedTaskManager.getPrioritizedTasks();
+        TreeSet<Task> priority = fileBackedTaskManager.getPrioritizedTasks();
 
         Task actual = priority.last();
         assertEquals(expected, actual, "Задачи не совпадают");
