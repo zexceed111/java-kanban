@@ -5,6 +5,7 @@ import main.TaskManager;
 import main.models.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.Set;
 import java.util.Iterator;
 
 
@@ -112,16 +113,6 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void getPriorityLastTask() throws ManagerSaveException {
-        Task expected = new Task("Задача 2", "Описание задачи 1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 14, 1));
-        fileBackedTaskManager.addTask(expected); //1
-        Set<Task> priority = fileBackedTaskManager.getPrioritizedTasks();
-
-        Task actual = priority;
-        assertEquals(expected, actual, "Задачи не совпадают");
-    }
-
-    @Test
-    public void getPriorityLastTask() throws ManagerSaveException {
         Task expected = new Task("Задача 2", "Описание задачи 1", Status.NEW,
                 Duration.ofMinutes(30),
                 LocalDateTime.of(2024, 3, 28, 14, 1));
@@ -138,6 +129,14 @@ public class FileBackedTaskManagerTest {
         assertEquals(expected, actual, "Задачи не совпадают");
     }
 
+
+    @Test
+    public void getTaskById() throws ManagerSaveException {
+
+        Task expected = new Task(1, "Задача 1", "Описание задачи 1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 10, 0));
+        Task actual = fileBackedTaskManager.getTask(1);
+        assertEquals(expected, actual, "Задачи не совпадают");
+    }
 
     @Test
     public void addTask() throws ManagerSaveException {
