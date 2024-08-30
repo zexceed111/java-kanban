@@ -10,9 +10,10 @@ import java.util.List;
 
 public class CSVTaskFormatter {
 
+    // Статический экземпляр форматера
+    private static final CSVTaskFormatter formatter = new CSVTaskFormatter();
 
     static String makeDataToSave(List<Task> tasks, List<Subtask> subtasks, List<Epic> epics, HistoryManager historyManager) {
-
         StringBuilder history = new StringBuilder();
         history.append("id,type,name,status,description,duration,startTime,epic or subtasks\n");
 
@@ -33,7 +34,6 @@ public class CSVTaskFormatter {
         }
         return history.toString();
     }
-
 
     static String historyToString(HistoryManager manager) {
         StringBuilder result = new StringBuilder();
@@ -59,9 +59,7 @@ public class CSVTaskFormatter {
         return result;
     }
 
-
     public static Task fromString(String value) {
-
         String[] data = value.split(",");
         int id = Integer.parseInt(data[0]);
         String title = data[2];
@@ -76,7 +74,7 @@ public class CSVTaskFormatter {
                 return new Task(id, title, description, status, Duration.ofMinutes(duration), startTime);
             }
             case SUBTASK: {
-                int epicId = Integer.parseInt(data[5]);
+                int epicId = Integer.parseInt(data[7]); // Исправлено: индекс 5 на 7 для epicId
                 return new Subtask(id, title, description, status, Duration.ofMinutes(duration), startTime, epicId);
             }
             case EPIC: {
@@ -86,6 +84,10 @@ public class CSVTaskFormatter {
                 return null;
             }
         }
+    }
 
+    // Метод для получения экземпляра форматера
+    public static CSVTaskFormatter getInstance() {
+        return formatter;
     }
 }
