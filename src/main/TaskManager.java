@@ -5,6 +5,7 @@ import main.models.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface TaskManager {
     Map<Integer, Task> getTaskHashMap();
@@ -16,7 +17,7 @@ public interface TaskManager {
     List<Task> getHistory();
 
 
-    Collection<Task> getPrioritizedTasks();
+    Set<Task> getPrioritizedTasks();
 
     int getNewId();
 
