@@ -42,16 +42,26 @@ public class FileBackedTaskManagerTest {
     public void saveSeveralTasksToTestFile() throws IOException {
         TaskManager fileBackedTaskManager1 = new FileBackedTaskManager(new InMemoryHistoryManager(), new File("test.csv"));
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 10, 0));
-        fileBackedTaskManager1.addTask(task1); //1
+        fileBackedTaskManager1.addTask(task1);
         Epic epic1 = new Epic("Эпик 1", "Описание Эпика 1", Status.NEW, Duration.ofMinutes(0), LocalDateTime.of(2024, 1, 28, 0, 0), new ArrayList<>());
-        fileBackedTaskManager1.addEpic(epic1);//2
+        fileBackedTaskManager1.addEpic(epic1);
         Subtask subtask1 = new Subtask("Подзадача 1", "Описание подзадачи 1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 11, 0), epic1.getId());
         Subtask subtask2 = new Subtask("Подзадача 2", "Описание подзадачи 2", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 13, 0), epic1.getId());
-        fileBackedTaskManager1.addSubtask(subtask1);//3
-        fileBackedTaskManager1.addSubtask(subtask2);//4
+        fileBackedTaskManager1.addSubtask(subtask1);
+        fileBackedTaskManager1.addSubtask(subtask2);
+
+        //задачи и подзадачи сохранены правильно
+        fileBackedTaskManager1.saveToFile();
+
         Task actual = fileBackedTaskManager1.getTask(1);
         Subtask subtask = fileBackedTaskManager1.getSubtask(3);
+
         TaskManager loadedFromFileBackedTaskManager = loadFromFile(new File("test.csv"));
+
+        // Отладочная информация
+        System.out.println("Loaded Tasks: " + loadedFromFileBackedTaskManager.getTasks());
+        System.out.println("Loaded History: " + loadedFromFileBackedTaskManager.getHistory());
+
         assertEquals(loadedFromFileBackedTaskManager.getTasks().size(), fileBackedTaskManager1.getTasks().size(), "Задачи не совпадают");
         assertEquals(loadedFromFileBackedTaskManager.getHistory().size(), fileBackedTaskManager1.getHistory().size(), "Задачи не совпадают");
     }
