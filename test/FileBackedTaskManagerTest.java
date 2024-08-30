@@ -40,7 +40,7 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void saveSeveralTasksToTestFile() throws IOException {
-        TaskManager fileBackedTaskManager1 = new FileBackedTaskManager(new InMemoryHistoryManager(),getInstance(), new File("test.csv"));
+        TaskManager fileBackedTaskManager1 = new FileBackedTaskManager(new InMemoryHistoryManager(), new File("test.csv"));
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 10, 0));
         fileBackedTaskManager1.addTask(task1); //1
         Epic epic1 = new Epic("Эпик 1", "Описание Эпика 1", Status.NEW, Duration.ofMinutes(0), LocalDateTime.of(2024, 1, 28, 0, 0), new ArrayList<>());
@@ -59,7 +59,7 @@ public class FileBackedTaskManagerTest {
 
     @Test
     public void saveSeveralTasksToTestFileWithoutHistory() throws IOException {
-        TaskManager fileBackedTaskManager1 = new FileBackedTaskManager(new InMemoryHistoryManager(), getInstance(), new File("test.csv"));
+        TaskManager fileBackedTaskManager1 = new FileBackedTaskManager(new InMemoryHistoryManager(), new File("test.csv"));
         Task task1 = new Task("Задача 1", "Описание задачи 1", Status.NEW, Duration.ofMinutes(30), LocalDateTime.of(2024, 3, 28, 10, 0));
         fileBackedTaskManager1.addTask(task1); //1
         Epic epic1 = new Epic("Эпик 1", "Описание Эпика 1", Status.NEW, Duration.ofMinutes(0), LocalDateTime.of(2024, 1, 28, 0, 0), new ArrayList<>());
