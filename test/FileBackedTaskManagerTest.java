@@ -69,14 +69,11 @@ public class FileBackedTaskManagerTest {
     }
 
     @Test
-    public void saveEmptyFile() throws ManagerSaveException {
-        try {
+    public void saveEmptyFile() {
+        assertThrows(ManagerSaveException.class, () -> {
             TaskManager fileBackedTaskManager1 = new FileBackedTaskManager(new InMemoryHistoryManager(), new File("test2.csv"));
             TaskManager loadedFromFileBackedTaskManager = loadFromFile(new File("test2.csv"));
-        } catch (ManagerSaveException e) {
-            assertEquals(e.getMessage(), "Ошибка работы с файлом");
-        }
-
+        }, "Ошибка работы с файлом");
     }
 
     // Тест проверяет наличие пересечений между задачами по времени
