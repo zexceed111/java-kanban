@@ -22,12 +22,9 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         autoSaveFileName = file;
     }
 
-
     public static FileBackedTaskManager loadFromFile(File file) throws ManagerSaveException {
         try {
-
             String data = Files.readString(file.toPath());
-
             String[] lines = data.split("\n");
             FileBackedTaskManager fileBackedTaskManager = new FileBackedTaskManager(new InMemoryHistoryManager(), file);
             int size = lines.length;
