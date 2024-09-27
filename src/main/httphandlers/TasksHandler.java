@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
+
 import static java.net.HttpURLConnection.*;
 
 public class TasksHandler implements HttpHandler {
@@ -136,7 +137,7 @@ public class TasksHandler implements HttpHandler {
         try {
             taskManager.addTask(newTask);
             writeResponse(exchange, "Task added", 201);
-        }catch (ManagerSaveException ex) {
+        } catch (ManagerSaveException ex) {
             System.out.println(ex.getMessage());
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
         }
@@ -183,9 +184,7 @@ public class TasksHandler implements HttpHandler {
         return gsonBuilder.create();
     }
 
-    private void writeResponse(HttpExchange exchange,
-                               String responseString,
-                               int responseCode) throws IOException {
+    private void writeResponse(HttpExchange exchange, String responseString, int responseCode) throws IOException {
         try (OutputStream os = exchange.getResponseBody()) {
             exchange.sendResponseHeaders(responseCode, 0);
             os.write(responseString.getBytes(DEFAULT_CHARSET));
@@ -196,22 +195,17 @@ public class TasksHandler implements HttpHandler {
     private Endpoint getEndpoint(String requestURI, String requestMethod) {
         switch (requestMethod) {
             case "GET": {
-                if (Pattern.matches("^/tasks$", requestURI))
-                    return Endpoint.GET_COLLECTION;
-                if (Pattern.matches("^/tasks/\\d+$", requestURI))
-                    return Endpoint.GET_ONE;
+                if (Pattern.matches("^/tasks$", requestURI)) return Endpoint.GET_COLLECTION;
+                if (Pattern.matches("^/tasks/\\d+$", requestURI)) return Endpoint.GET_ONE;
                 return Endpoint.UNKNOWN;
             }
             case "POST": {
-                if (Pattern.matches("^/tasks$", requestURI))
-                    return Endpoint.ADD;
-                if (Pattern.matches("^/tasks\\?id=\\d+$", requestURI))
-                    return Endpoint.UPDATE;
+                if (Pattern.matches("^/tasks$", requestURI)) return Endpoint.ADD;
+                if (Pattern.matches("^/tasks\\?id=\\d+$", requestURI)) return Endpoint.UPDATE;
                 return Endpoint.UNKNOWN;
             }
             case "DELETE": {
-                if (Pattern.matches("^/tasks\\?id=\\d+$", requestURI))
-                    return Endpoint.DELETE;
+                if (Pattern.matches("^/tasks\\?id=\\d+$", requestURI)) return Endpoint.DELETE;
                 return Endpoint.UNKNOWN;
             }
             default:
