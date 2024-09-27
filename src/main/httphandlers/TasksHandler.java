@@ -9,7 +9,6 @@ import main.models.ManagerSaveException;
 import main.models.Task;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -29,35 +28,19 @@ public class TasksHandler implements HttpHandler {
     }
 
     public Map<String, String> queryToMap(String query) {
-        if (query == null || query.isEmpty()) {
-            return new HashMap<>();
+        if (query == null) {
+            return null;
         }
         Map<String, String> result = new HashMap<>();
         for (String param : query.split("&")) {
-            String[] entry = param.split("=", 2);
-            String key = entry[0];
-            String value = entry.length > 1 ? entry[1] : null;
-            System.out.printf("Parameter: %s, Value: %s%n", key, value);
-            result.put(key, value);
+            String[] entry = param.split("=");
+            if (entry.length > 1) {
+                result.put(entry[0], entry[1]);
+            } else {
+                result.put(entry[0], "");
+            }
         }
         return result;
-    }
-
-    public class QueryUtils {
-        public static Map<String, String> parseQuery(String query) {
-            if (query == null || query.isEmpty()) {
-                return new HashMap<>();
-            }
-            Map<String, String> result = new HashMap<>();
-            for (String param : query.split("&")) {
-                String[] entry = param.split("=", 2);
-                String key = entry[0];
-                String value = entry.length > 1 ? entry[1] : null;
-                System.out.printf("Parameter: %s, Value: %s%n", key, value);
-                result.put(key, value);
-            }
-            return result;
-        }
     }
 
     @Override
@@ -127,16 +110,18 @@ public class TasksHandler implements HttpHandler {
     }
 
     private void handleAddTask(HttpExchange exchange) throws IOException {
-        InputStream inputStream = exchange.getRequestBody();
-        String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
         JsonElement jsonElement = JsonParser.parseString(body);
+
         if (!jsonElement.isJsonObject()) { // проверяем, точно ли мы получили JSON-объект
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
         }
-        Task newTask = GsonProvider.getGson().fromJson(body, Task.class);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        Gson gson = getDefaultGson();
+        Task task = gson.fromJson(jsonObject, Task.class);
         try {
-            taskManager.addTask(newTask);
-            writeResponse(exchange, "Task added", 201);
+            taskManager.addTask(task);
+            writeResponse(exchange, "Added", HTTP_CREATED);
         } catch (ManagerSaveException ex) {
             System.out.println(ex.getMessage());
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
@@ -145,15 +130,16 @@ public class TasksHandler implements HttpHandler {
     }
 
     private void handleDeleteTask(HttpExchange exchange) throws IOException {
-        Map<String, String> params = QueryUtils.parseQuery(exchange.getRequestURI().getQuery());
+        Map<String, String> params = queryToMap(exchange.getRequestURI().getQuery());
         int id = Integer.parseInt(params.get("id"));
         try {
             taskManager.deleteTask(id);
-            writeResponse(exchange, "Deleted", HTTP_OK);
+            writeResponse(exchange, "Deleted", HTTP_CREATED);
         } catch (ManagerSaveException ex) {
             System.out.println(ex.getMessage());
             writeResponse(exchange, "Not Found", HTTP_NOT_FOUND);
         }
+
     }
 
     private void handleUpdateTask(HttpExchange exchange) throws IOException {
@@ -216,5 +202,3 @@ public class TasksHandler implements HttpHandler {
 
     }
 }
-
-
