@@ -45,7 +45,7 @@ public class HttpTaskServerTest {
 
     @Test
     void addTasksReturnCode200() throws IOException, InterruptedException {
-        String uri = "Фhttp://localhost:8080/tasks";
+        String uri = "http://localhost:8080/tasks";
         String jsonBody = "{\n" + "\t\"title\": \"Задача 5\",\n" + "\t\"description\": \"Описание задачи 4\",\n" + "\t\"id\": 60,\n" + "\t\"status\": \"NEW\",\n" + "\t\"duration\": 25,\n" + "\t\"startTime\": \"08.03.2024 13:00\"\n" + "}";
 
         HttpResponse<String> response = HttpTestUtils.sendPostRequest(uri, jsonBody);
