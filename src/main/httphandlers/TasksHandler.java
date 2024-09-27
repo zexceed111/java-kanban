@@ -126,25 +126,6 @@ public class TasksHandler implements HttpHandler {
     }
 
     private void handleAddTask(HttpExchange exchange) throws IOException {
-        String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-        JsonElement jsonElement = JsonParser.parseString(body);
-
-        if (!jsonElement.isJsonObject()) { // проверяем, точно ли мы получили JSON-объект
-            writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
-        }
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-        Gson gson = getDefaultGson();
-        Task task = gson.fromJson(jsonObject, Task.class);
-        try {
-            taskManager.addTask(task);
-            writeResponse(exchange, "Added", HTTP_CREATED);
-        } catch (ManagerSaveException ex) {
-            System.out.println(ex.getMessage());
-            writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
-        }
-
-    }
-    private void handleAddTasks(HttpExchange exchange) throws IOException {
         InputStream inputStream = exchange.getRequestBody();
         String body = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
         JsonElement jsonElement = JsonParser.parseString(body);
