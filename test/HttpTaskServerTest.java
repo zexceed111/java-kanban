@@ -1,7 +1,6 @@
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
 import main.HttpTaskServer;
-import main.httphandlers.HttpTestUtils;
 import main.httphandlers.LocalDateTimeTypeAdapter;
 import main.models.*;
 import org.junit.jupiter.api.*;
@@ -44,24 +43,44 @@ public class HttpTaskServerTest {
 
 
     @Test
-    void addTasksReturnCode200() throws IOException, InterruptedException {
-        String uri = "http://localhost:8080/tasks";
-        String jsonBody = "{\n" + "\t\"title\": \"Задача 5\",\n" + "\t\"description\": \"Описание задачи 4\",\n" + "\t\"id\": 60,\n" + "\t\"status\": \"NEW\",\n" + "\t\"duration\": 25,\n" + "\t\"startTime\": \"08.03.2024 13:00\"\n" + "}";
+    void AddTasksReturnCode200() throws IOException, InterruptedException {
 
-        HttpResponse<String> response = HttpTestUtils.sendPostRequest(uri, jsonBody);
-
+        URI uri = URI.create("http://localhost:8080/tasks");
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Content-Type", "application/json;charset=UTF-8")
+                .POST(HttpRequest.BodyPublishers.ofString("{\n" +
+                        "\t\t\"title\": \"Задача 5\",\n" +
+                        "\t\t\"description\": \"Описание задачи 4\",\n" +
+                        "\t\t\"id\": 60,\n" +
+                        "\t\t\"status\": \"NEW\",\n" +
+                        "\t\t\"duration\": 25,\n" +
+                        "\t\t\"startTime\": \"08.03.2024 13:00\"\n" +
+                        "\t}"))
+                .build();
+        HttpClient client = HttpClient.newHttpClient();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int expectedResponseCode = 201;
         int actualResponseCode = response.statusCode();
         List<Task> taskList = httpTaskServer.taskManager.getTasks();
-
         assertEquals(expectedResponseCode, actualResponseCode, "Коды не совпадают");
         assertEquals(4, taskList.size(), "Не верное количество задач");
+
     }
 
     @Test
     void AddIntersectedTasksReturnCode406() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/tasks");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").POST(HttpRequest.BodyPublishers.ofString("{\n" + "\t\t\"title\": \"Задача 5\",\n" + "\t\t\"description\": \"Описание задачи 4\",\n" + "\t\t\"id\": 60,\n" + "\t\t\"status\": \"NEW\",\n" + "\t\t\"duration\": 30,\n" + "\t\t\"startTime\": \"28.03.2024 13:00\"\n" + "\t}")).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .POST(HttpRequest.BodyPublishers.ofString("{\n" +
+                        "\t\t\"title\": \"Задача 5\",\n" +
+                        "\t\t\"description\": \"Описание задачи 4\",\n" +
+                        "\t\t\"id\": 60,\n" +
+                        "\t\t\"status\": \"NEW\",\n" +
+                        "\t\t\"duration\": 30,\n" +
+                        "\t\t\"startTime\": \"28.03.2024 13:00\"\n" +
+                        "\t}"))
+                .build();
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int expectedResponseCode = 406;
@@ -73,7 +92,17 @@ public class HttpTaskServerTest {
     @Test
     void UpdateTasksReturnCode200() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/tasks?id=1");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").POST(HttpRequest.BodyPublishers.ofString("{\n" + "\t\t\"title\": \"Задача 1\",\n" + "\t\t\"description\": \"Описание задачи 1\",\n" + "\t\t\"id\": 1,\n" + "\t\t\"status\": \"NEW\",\n" + "\t\t\"duration\": 30,\n" + "\t\t\"startTime\": \"01.03.2024 13:00\"\n" + "\t}")).build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .POST(HttpRequest.BodyPublishers.ofString("{\n" +
+                        "\t\t\"title\": \"Задача 1\",\n" +
+                        "\t\t\"description\": \"Описание задачи 1\",\n" +
+                        "\t\t\"id\": 1,\n" +
+                        "\t\t\"status\": \"NEW\",\n" +
+                        "\t\t\"duration\": 30,\n" +
+                        "\t\t\"startTime\": \"01.03.2024 13:00\"\n" +
+                        "\t}"))
+                .build();
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         int expectedResponseCode = 201;
@@ -87,7 +116,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetTasksReturnCode200AndTasksCountEqualToThree() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/tasks");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -102,7 +134,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetTasksWithId1ReturnCode200AndActualTask() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/tasks/1");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -118,7 +153,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetTasksWithNonExistId100ReturnCode404() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/tasks/100");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -131,7 +169,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetSubtasksReturnCode200AndSubtasksCountEqualToSix() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/subtasks");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -146,7 +187,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetSubtasksWithId7ReturnCode200AndActualTask() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/subtasks/7");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -162,7 +206,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetSubTasksWithNonExistId100ReturnCode404() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/subtasks/100");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -175,7 +222,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetEpicsReturnCode200AndEpicsCountEqualToFour() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/epics");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -190,7 +240,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetEpicWithId13ReturnCode200AndActualTask() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/epics/13");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -207,7 +260,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetEpicWithNonExistId100ReturnCode404() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/epics/100");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -219,7 +275,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckSendRequestBadURIReturnCode400() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/blelel");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -231,7 +290,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetHistorySize() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/history");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -245,7 +307,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetPriorityFirstTaskId2() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/prioritized");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -260,7 +325,10 @@ public class HttpTaskServerTest {
     @Test
     void CheckGetPriorityLastTaskHasId12() throws IOException, InterruptedException {
         URI uri = URI.create("http://localhost:8080/prioritized");
-        HttpRequest request = HttpRequest.newBuilder().uri(uri).header("Accept", "application/json;charset=UTF-8").GET().build();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(uri).header("Accept", "application/json;charset=UTF-8")
+                .GET()
+                .build();
         HttpClient client = HttpClient.newHttpClient();
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
