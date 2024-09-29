@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -83,7 +82,7 @@ public class TasksHandler implements HttpHandler {
     }
 
     private void handleGetTasks(HttpExchange exchange) throws IOException {
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Headers headers = exchange.getResponseHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
         String response = gson.toJson(taskManager.getTasks());
@@ -94,7 +93,7 @@ public class TasksHandler implements HttpHandler {
     private void handleGetTask(HttpExchange exchange) throws IOException {
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
         int taskId = Integer.parseInt(pathParts[2]);
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Headers headers = exchange.getResponseHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
         Task task = taskManager.getTask(taskId);
@@ -114,7 +113,7 @@ public class TasksHandler implements HttpHandler {
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
         }
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Task task = gson.fromJson(jsonObject, Task.class);
         try {
             taskManager.addTask(task);
@@ -146,7 +145,7 @@ public class TasksHandler implements HttpHandler {
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
         }
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Task task = gson.fromJson(jsonObject, Task.class);
 
         try {
@@ -157,14 +156,6 @@ public class TasksHandler implements HttpHandler {
             System.out.println(ex.getMessage());
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
         }
-    }
-
-    private Gson getDefaultGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter());
-        gsonBuilder.serializeNulls();
-        return gsonBuilder.create();
     }
 
     private void writeResponse(HttpExchange exchange, String responseString, int responseCode) throws IOException {

@@ -2,14 +2,17 @@ package main.httphandlers;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.time.LocalDateTime;
 
 public class GsonProvider {
-    private static final Gson gson = createGson();
+    private static final Gson gson;
 
-    private static Gson createGson() {
-        return new GsonBuilder()
-                .serializeNulls() // или другие настройки
-                .create();
+    static {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.setPrettyPrinting();
+        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter());
+        gsonBuilder.serializeNulls();
+        gson = gsonBuilder.create();
     }
 
     public static Gson getGson() {

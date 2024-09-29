@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,7 +87,7 @@ public class EpicsHandler implements HttpHandler {
     }
 
     private void handleGetEpics(HttpExchange exchange) throws IOException {
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Headers headers = exchange.getResponseHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
         String response = gson.toJson(taskManager.getEpics());
@@ -99,7 +98,7 @@ public class EpicsHandler implements HttpHandler {
     private void handleGetEpic(HttpExchange exchange) throws IOException {
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
         int epicId = Integer.parseInt(pathParts[2]);
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Headers headers = exchange.getResponseHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
         Epic epic = taskManager.getEpic(epicId);
@@ -114,7 +113,7 @@ public class EpicsHandler implements HttpHandler {
     private void handleGetEpicSubtasks(HttpExchange exchange) throws IOException {
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
         int epicId = Integer.parseInt(pathParts[2]);
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Headers headers = exchange.getResponseHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
         Epic epic = taskManager.getEpic(epicId);
@@ -135,7 +134,7 @@ public class EpicsHandler implements HttpHandler {
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
         }
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Epic epic = gson.fromJson(jsonObject, Epic.class);
         System.out.println("Эпик " + epic.toString());
 
@@ -163,14 +162,6 @@ public class EpicsHandler implements HttpHandler {
             writeResponse(exchange, "Not Found", HTTP_NOT_FOUND);
         }
 
-    }
-
-    private Gson getDefaultGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        gsonBuilder.serializeNulls();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter());
-        return gsonBuilder.create();
     }
 
     private void writeResponse(HttpExchange exchange, String responseString, int responseCode) throws IOException {

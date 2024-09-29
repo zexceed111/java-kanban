@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -84,7 +84,7 @@ public class SubtasksHandler implements HttpHandler {
     }
 
     private void handleGetSubtasks(HttpExchange exchange) throws IOException {
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Headers headers = exchange.getResponseHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
         String response = gson.toJson(taskManager.getSubtasks());
@@ -95,7 +95,7 @@ public class SubtasksHandler implements HttpHandler {
     private void handleGetSubtask(HttpExchange exchange) throws IOException {
         String[] pathParts = exchange.getRequestURI().getPath().split("/");
         int subtaskId = Integer.parseInt(pathParts[2]);
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Headers headers = exchange.getResponseHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
         Subtask subtask = taskManager.getSubtask(subtaskId);
@@ -115,7 +115,7 @@ public class SubtasksHandler implements HttpHandler {
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
         }
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Subtask subtask = gson.fromJson(jsonObject, Subtask.class);
         System.out.println("Подзадача" + subtask.toString());
         try {
@@ -150,7 +150,7 @@ public class SubtasksHandler implements HttpHandler {
             writeResponse(exchange, "Not Acceptable", HTTP_NOT_ACCEPTABLE);
         }
         JsonObject jsonObject = jsonElement.getAsJsonObject();
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Subtask subtask = gson.fromJson(jsonObject, Subtask.class);
         System.out.println(subtask.toString());
         try {
@@ -162,12 +162,7 @@ public class SubtasksHandler implements HttpHandler {
         }
     }
 
-    private Gson getDefaultGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter());
-        return gsonBuilder.create();
-    }
+
 
     private void writeResponse(HttpExchange exchange, String responseString, int responseCode) throws IOException {
         try (OutputStream os = exchange.getResponseBody()) {

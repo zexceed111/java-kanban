@@ -1,7 +1,6 @@
 package main.httphandlers;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -11,7 +10,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 import static java.net.HttpURLConnection.*;
 
@@ -47,7 +45,7 @@ public class HistoryHandler implements HttpHandler {
     }
 
     private void handleGetHistory(HttpExchange exchange) throws IOException {
-        Gson gson = getDefaultGson();
+        Gson gson = GsonProvider.getGson();
         Headers headers = exchange.getResponseHeaders();
         headers.set("Content-Type", "application/json;charset=UTF-8");
         String response = gson.toJson(taskManager.getHistory());
@@ -55,13 +53,6 @@ public class HistoryHandler implements HttpHandler {
 
     }
 
-    private Gson getDefaultGson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setPrettyPrinting();
-        gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeTypeAdapter());
-        gsonBuilder.serializeNulls();
-        return gsonBuilder.create();
-    }
 
     private void writeResponse(HttpExchange exchange,
                                String responseString,
