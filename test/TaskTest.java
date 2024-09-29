@@ -4,9 +4,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
-import main.*;
 
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+
+import main.Task;
+import main.HttpTaskServer;
 
 public class TaskTest {
 
@@ -41,7 +45,9 @@ public class TaskTest {
         int expectedResponseCode = 201;
         int actualResponseCode = response.statusCode();
 
-        List<Task> taskList = httpTaskServer.taskManager.getTasks();
+
+        HttpTaskServer httpTaskServer = new HttpTaskServer();
+        List<Task> taskList = httpTaskServer.getTaskManager().getTasks();
 
         assertEquals(expectedResponseCode, actualResponseCode, "Коды не совпадают");
         assertEquals(4, taskList.size(), "Не верное количество задач");
