@@ -35,7 +35,6 @@ public class TasksHandler implements HttpHandler {
         for (String param : query.split("&")) {
             String[] entry = param.split("=");
             String value = (entry.length > 1) ? entry[1] : null;
-            System.out.println("Parameter: " + entry[0] + ", Value: " + value);
             result.put(entry[0], value);
         }
         return result;
