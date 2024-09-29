@@ -41,7 +41,28 @@ public class HttpTaskServerTest {
         return gsonBuilder.create();
     }
 
+    @Test
+    void AddTasksReturnCode200() throws IOException, InterruptedException {
+        String uri = "http://localhost:8080/tasks";
+        String jsonBody = "{\n" +
+                "\t\t\"title\": \"Задача 5\",\n" +
+                "\t\t\"description\": \"Описание задачи 4\",\n" +
+                "\t\t\"id\": 60,\n" +
+                "\t\t\"status\": \"NEW\",\n" +
+                "\t\t\"duration\": 25,\n" +
+                "\t\t\"startTime\": \"08.03.2024 13:00\"\n" +
+                "\t}";
 
+        HttpClient client = HttpClient.newHttpClient();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        int expectedResponseCode = 201;
+        int actualResponseCode = response.statusCode();
+        HttpTaskServer httpTaskServer = new HttpTaskServer();
+        List<Task> taskList = httpTaskServer.getTaskManager().getTasks();
+        assertEquals(expectedResponseCode, actualResponseCode, "Коды не совпадают");
+        assertEquals(4, taskList.size(), "Не верное количество задач");
+    }
+}
 
     @Test
     void AddIntersectedTasksReturnCode406() throws IOException, InterruptedException {
