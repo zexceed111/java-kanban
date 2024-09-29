@@ -34,11 +34,9 @@ public class TasksHandler implements HttpHandler {
         Map<String, String> result = new HashMap<>();
         for (String param : query.split("&")) {
             String[] entry = param.split("=");
-            if (entry.length > 1) {
-                result.put(entry[0], entry[1]);
-            } else {
-                result.put(entry[0], "");
-            }
+            String value = (entry.length > 1) ? entry[1] : null;
+            System.out.println("Parameter: " + entry[0] + ", Value: " + value);
+            result.put(entry[0], value);
         }
         return result;
     }
