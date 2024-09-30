@@ -10,7 +10,6 @@ import java.util.List;
 
 public class CSVTaskFormatter {
 
-
     static String makeDataToSave(List<Task> tasks, List<Subtask> subtasks, List<Epic> epics, HistoryManager historyManager) {
 
         StringBuilder history = new StringBuilder();
@@ -27,13 +26,13 @@ public class CSVTaskFormatter {
             history.append(epic.toStringForFile()).append("\n");
         }
         history.append("\n");
-        if (historyManager.getHistory().isEmpty()) history.append("empty history");
+        if (historyManager.getHistory().isEmpty())
+            history.append("empty history");
         else {
             history.append(historyToString(historyManager));
         }
         return history.toString();
     }
-
 
     static String historyToString(HistoryManager manager) {
         StringBuilder result = new StringBuilder();
@@ -51,7 +50,8 @@ public class CSVTaskFormatter {
 
     static List<Integer> historyFromString(String value) {
         List<Integer> result = new ArrayList<>();
-        if (value.equals("empty history")) return result;
+        if (value.equals("empty history"))
+            return result;
         String[] historyIds = value.split(",");
         for (String id : historyIds) {
             result.add(Integer.parseInt(id));
@@ -59,9 +59,7 @@ public class CSVTaskFormatter {
         return result;
     }
 
-
     public static Task fromString(String value) {
-
         String[] data = value.split(",");
         int id = Integer.parseInt(data[0]);
         String title = data[2];
@@ -82,11 +80,7 @@ public class CSVTaskFormatter {
             case EPIC: {
                 return new Epic(id, title, description, status, Duration.ofMinutes(duration), startTime, null);
             }
-            default: {
-                return null;
-            }
         }
-
+        return null;
     }
-
 }

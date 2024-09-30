@@ -10,7 +10,7 @@ public class Task {
     protected String description;
     protected int id;
     protected Status status;
-    protected long duration;
+    protected Long duration;
     protected LocalDateTime startTime;
 
     public Task(int id, String title, String description, Status status, Duration duration, LocalDateTime startTime) {
@@ -100,12 +100,22 @@ public class Task {
 
 
     public String toStringForFile() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-        return String.format("%d,TASK,%s,%s,%s,%d,%s", id, title, status, description, duration, startTime.format(formatter));
+        if (startTime != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+            return String.format("%d,TASK,%s,%s,%s,%d,%s", id, title, status, description, duration, startTime.format(formatter));
+        }
+        return String.format("%d,TASK,%s,%s,%s,%d,%s", id, title, status, description, duration, null);
     }
 
     @Override
     public String toString() {
-        return "Task{" + "title='" + title + '\'' + ", description='" + description + '\'' + ", id=" + id + ", status=" + status + ", duration=" + duration + ", startTime=" + startTime + '}';
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", id=" + id +
+                ", status=" + status +
+                ", duration=" + duration +
+                ", startTime=" + startTime +
+                '}';
     }
 }

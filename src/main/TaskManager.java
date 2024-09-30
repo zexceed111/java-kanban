@@ -4,7 +4,7 @@ import main.models.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.TreeSet;
 
 public interface TaskManager {
     Map<Integer, Task> getTaskHashMap();
@@ -16,7 +16,7 @@ public interface TaskManager {
     List<Task> getHistory();
 
 
-    Set<Task> getPrioritizedTasks();
+    TreeSet<Task> getPrioritizedTasks();
 
     int getNewId();
 
@@ -24,11 +24,9 @@ public interface TaskManager {
 
     List<Task> getTasks();
 
-
     void deleteTasks() throws ManagerSaveException;
 
     Task getTask(int id) throws ManagerSaveException;
-
 
     void addTask(Task newTask) throws ManagerSaveException;
 
@@ -45,7 +43,6 @@ public interface TaskManager {
     Subtask getSubtask(int id) throws ManagerSaveException;
 
     void addSubtask(Subtask newSubtask) throws ManagerSaveException;
-
 
     void updateSubtask(Subtask newSubtask) throws ManagerSaveException;
 
