@@ -45,15 +45,6 @@ public class HttpTaskServerTest {
     @Test
     void AddTasksReturnCode200() throws IOException, InterruptedException {
 
-        HttpResponse<String> response = getStringHttpResponse();
-        int expectedResponseCode = 201;
-        int actualResponseCode = response.statusCode();
-        List<Task> taskList = httpTaskServer.taskManager.getTasks();
-        assertEquals(expectedResponseCode, actualResponseCode, "Коды не совпадают");
-        assertEquals(4, taskList.size(), "Не верное количество задач");
-    }
-
-    private static HttpResponse<String> getStringHttpResponse() {
         URI uri = URI.create("http://localhost:8080/tasks");
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(uri).header("Content-Type", "application/json;charset=UTF-8")
@@ -68,7 +59,11 @@ public class HttpTaskServerTest {
                 .build();
         HttpClient client = HttpClient.newHttpClient();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response;
+        int expectedResponseCode = 201;
+        int actualResponseCode = response.statusCode();
+        List<Task> taskList = httpTaskServer.taskManager.getTasks();
+        assertEquals(expectedResponseCode, actualResponseCode, "Коды не совпадают");
+        assertEquals(4, taskList.size(), "Не верное количество задач");
     }
 
     @Test
